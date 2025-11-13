@@ -11,17 +11,32 @@ router.get("/search-result", function (req, res, next) {
     res.send("You searched for: " + req.query.keyword);
 });
 
-// Export the router object so index.js can access it
-module.exports = router;
-
-// UPDATED ROUTE
 router.get("/list", function (req, res, next) {
-    let sqlquery = "SELECT * FROM books"; // query database to get all the books
-    // execute sql query
+    let sqlquery = "SELECT * FROM books";
     db.query(sqlquery, (err, result) => {
         if (err) {
-            next(err); // Pass the error to the error handler
+            next(err);
         }
         res.render("list.ejs", { books: result });
     });
 });
+
+router.get("/addbook", function (req, res, next) {
+    res.render("addbook.ejs");
+});
+
+router.post("/bookadded", function (req, res, next) {
+    let sqlquery = "INSERT INTO books (name, price) VALUES (?,?)";
+    // Use parameterized query to prevent SQL injection
+    let newrecord = [req.body.name, req.body.price];
+    db.query(sqlquery, newrecord, (err, result) => {
+        if (err) {
+            next(err);
+        } else {
+            res.send("This book is added to database, name: " + req.body.name + " price " + req.body.price);
+        }
+    });
+});
+
+// Export the router object so index.js can access it
+module.exports = router;
