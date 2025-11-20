@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Login Audit - <%=shopData.shopName%></title>
+        <link rel="stylesheet" type="text/css" href="/main.css" />
+    </head>
+    <body>
+        <h1><%=shopData.shopName%> Login Audit</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Timestamp</th>
+                    <th>Username</th>
+                    <th>Success</th>
+                    <th>Reason</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% attempts.forEach(function(a){ %>
+                <tr>
+                    <td><%= a.id %></td>
+                    <td><%= a.attemptedAt %></td>
+                    <td><%= a.username || '-' %></td>
+                    <td><%= a.success ? 'Yes' : 'No' %></td>
+                    <td><%= a.reason || '' %></td>
+                </tr>
+                <% }) %>
+            </tbody>
+        </table>
+        <p><a href="/">Home</a></p>
+    </body>
+</html>
